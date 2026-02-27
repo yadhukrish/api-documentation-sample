@@ -14,25 +14,35 @@ All requests to this API require an `appid` (API Key).
 3. Append the key to your request as a query parameter: `?appid={your_api_key}`.
 
 ---
-
 ## Request Parameters
+
+The API supports location lookups via geographic coordinates or city names. Use the following parameters to define the scope of the request.
 
 | Parameter | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
-| `lat` | decimal | **Yes** | Latitude of the location (e.g., `12.9716` for Bangalore). |
-| `lon` | decimal | **Yes** | Longitude of the location (e.g., `77.5946` for Bangalore). |
-| `appid` | string | **Yes** | Your unique API key. |
-| `units` | string | No | Temperature units. Options: `standard` (Kelvin), `metric` (Celsius), `imperial` (Fahrenheit). |
-| `lang` | string | No | Language for the `description` field (e.g., `hi` for Hindi, `en` for English). |
+| q | string | Conditional | City name, state code (USA only), and country code divided by commas (e.g., Bengaluru,IN). |
+| lat | decimal | Conditional | Latitude of the location. Required if the q parameter is not used. |
+| lon | decimal | Conditional | Longitude of the location. Required if the q parameter is not used. |
+| appid | string | Yes | Unique API key assigned to the account for authentication. |
+| units | string | No | Measurement units for temperature. Options include standard, metric, and imperial. |
+| lang | string | No | Language code for the output description (e.g., hi for Hindi, en for English). |
 
 ---
 
-## Example Request (cURL)
+## Example Request (City Name)
+
+To retrieve weather data using a specific city and country code, use the following request structure:
 
 ```bash
-curl "[https://api.openweathermap.org/data/2.5/weather?lat=12.97&lon=77.59&appid=](https://api.openweathermap.org/data/2.5/weather?lat=12.97&lon=77.59&appid=){API_KEY}&units=metric"
+curl "https://api.openweathermap.org/data/2.5/weather?q=Bengaluru,IN&appid={API_KEY}&units=metric"
 ```
 
+<!-- ## Example Request (cURL)
+
+```bash
+curl "https://api.openweathermap.org/data/2.5/weather?lat=12.97&lon=77.59&appid={API_KEY}&units=metric"
+```
+-->
 ---
 
 ## Response Schema
@@ -41,25 +51,46 @@ The API returns a JSON object. Below is an example of a successful response and 
 ### Response Body Example
 ```json
 {
-  "coord": { "lon": 77.59, "lat": 12.97 },
+  "coord": {
+    "lon": 77.6033,
+    "lat": 12.9762
+  },
   "weather": [
     {
-      "id": 800,
-      "main": "Clear",
-      "description": "clear sky",
-      "icon": "01d"
+      "id": 802,
+      "main": "Clouds",
+      "description": "scattered clouds",
+      "icon": "03d"
     }
   ],
+  "base": "stations",
   "main": {
-    "temp": 28.5,
-    "feels_like": 30.2,
-    "temp_min": 27.0,
-    "temp_max": 29.5,
-    "pressure": 1012,
-    "humidity": 45
+    "temp": 31.26,
+    "feels_like": 29.59,
+    "temp_min": 31.26,
+    "temp_max": 31.26,
+    "pressure": 1005,
+    "humidity": 25,
+    "sea_level": 1005,
+    "grnd_level": 909
   },
   "visibility": 10000,
-  "wind": { "speed": 4.1, "deg": 80 },
+  "wind": {
+    "speed": 4.81,
+    "deg": 186,
+    "gust": 4.51
+  },
+  "clouds": {
+    "all": 35
+  },
+  "dt": 1772184946,
+  "sys": {
+    "country": "IN",
+    "sunrise": 1772154417,
+    "sunset": 1772197089
+  },
+  "timezone": 19800,
+  "id": 1277333,
   "name": "Bengaluru",
   "cod": 200
 }
