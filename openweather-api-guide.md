@@ -20,11 +20,11 @@ The API supports location lookups via geographic coordinates or city names. Use 
 
 | Parameter | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
-| q | string | Conditional | City name, state code (USA only), and country code divided by commas (e.g., Bengaluru,IN). |
-| lat | decimal | Conditional | Latitude of the location. Required if the q parameter is not used. |
-| lon | decimal | Conditional | Longitude of the location. Required if the q parameter is not used. |
+| q | string | Conditional | City name, state code (USA only), and country code separated by commas (e.g., Bengaluru,IN). |
+| lat | decimal | Conditional | Latitude of the location. Required if the `q` parameter is not used. |
+| lon | decimal | Conditional | Longitude of the location. Required if the `q` parameter is not used. |
 | appid | string | Yes | Unique API key assigned to the account for authentication. |
-| units | string | No | Measurement units for temperature. Options include standard, metric, and imperial. |
+| units | string | No | Measurement units for temperature. Options include `standard`, `metric`, and `imperial`. |
 | lang | string | No | Language code for the output description (e.g., hi for Hindi, en for English). |
 
 ---
@@ -36,19 +36,12 @@ To retrieve weather data using a specific city and country code, use the followi
 ```bash
 curl "https://api.openweathermap.org/data/2.5/weather?q=Bengaluru,IN&appid={API_KEY}&units=metric"
 ```
-
-<!-- ## Example Request (cURL)
-
-```bash
-curl "https://api.openweathermap.org/data/2.5/weather?lat=12.97&lon=77.59&appid={API_KEY}&units=metric"
-```
--->
 ---
 
 ## Response Schema
 The API returns a JSON object. Below is an example of a successful response and the definitions of its primary fields.
 
-### Response Body Sample
+### Sample Response Body
 ```json
 {
   "coord": {
@@ -104,10 +97,10 @@ The following table defines the key fields returned in the JSON response object 
 | Field | Type | Description |
 | :--- | :--- | :--- |
 | **`weather.main`** | string | Group of weather parameters (e.g., Rain, Snow, Clouds). |
-| **`weather.description`** | string | Detailed description of the condition (e.g., "broken clouds"). |
+| **`weather.description`** | string | Detailed description of the condition (e.g., "scattered clouds"). |
 | **`main.temp`** | decimal | Current temperature. Units depend on the `units` parameter. |
 | **`main.humidity`** | integer | Humidity percentage (%). |
-| **`wind.speed`** | decimal | Wind speed. Unit Default: meter/sec. |
+| **`wind.speed`** | decimal | Wind speed. Default unit: meters per second. |
 | **`name`** | string | City name (e.g., Bengaluru). |
 | **`cod`** | integer | Internal parameter / HTTP status code. |
 
