@@ -31,3 +31,35 @@ All requests to this API require an `appid` (API Key).
 
 ```bash
 curl "[https://api.openweathermap.org/data/2.5/weather?lat=12.97&lon=77.59&appid=](https://api.openweathermap.org/data/2.5/weather?lat=12.97&lon=77.59&appid=){API_KEY}&units=metric"
+```
+
+---
+
+## Response Schema
+The API returns a JSON object. Below is an example of a successful response and the definitions of its primary fields.
+
+### Response Body Example
+```json
+{
+  "coord": { "lon": 77.59, "lat": 12.97 },
+  "weather": [
+    {
+      "id": 800,
+      "main": "Clear",
+      "description": "clear sky",
+      "icon": "01d"
+    }
+  ],
+  "main": {
+    "temp": 28.5,
+    "feels_like": 30.2,
+    "temp_min": 27.0,
+    "temp_max": 29.5,
+    "pressure": 1012,
+    "humidity": 45
+  },
+  "visibility": 10000,
+  "wind": { "speed": 4.1, "deg": 80 },
+  "name": "Bengaluru",
+  "cod": 200
+}
