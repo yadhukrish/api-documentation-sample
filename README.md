@@ -1,11 +1,11 @@
 # Technical Writing Portfolio: API Documentation
 
 ## Overview
-This project serves as a technical writing sample for the **OpenWeather API**. It demonstrates my ability to document RESTful endpoints, authentication workflows, and JSON response schemas.
+This project serves as a technical writing sample for the OpenWeather API. It demonstrates my ability to document RESTful endpoints, authentication workflows, and JSON response schemas.
 
 ## Skills Demonstrated
 * **Docs-as-Code:** Writing documentation in Markdown and managing it via GitHub.
-* **API Testing:** Verified endpoint behavior and error codes using **Postman**.
+* **API Testing:** Verified endpoint behavior and error codes using Postman.
 * **Technical Accuracy:** Mapping complex JSON responses to human-readable definitions.
 
 ## Project Structure
