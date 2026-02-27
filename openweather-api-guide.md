@@ -29,7 +29,7 @@ The API supports location lookups via geographic coordinates or city names. Use 
 
 ---
 
-## Example Request (City Name)
+## Sample Request (City Name)
 
 To retrieve weather data using a specific city and country code, use the following request structure:
 
@@ -48,7 +48,7 @@ curl "https://api.openweathermap.org/data/2.5/weather?lat=12.97&lon=77.59&appid=
 ## Response Schema
 The API returns a JSON object. Below is an example of a successful response and the definitions of its primary fields.
 
-### Response Body Example
+### Response Body Sample
 ```json
 {
   "coord": {
