@@ -63,3 +63,33 @@ The API returns a JSON object. Below is an example of a successful response and 
   "name": "Bengaluru",
   "cod": 200
 }
+```
+
+---
+
+## Response Field Definitions
+The following table defines the key fields returned in the JSON response object to assist with data mapping and integration.
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| **`weather.main`** | string | Group of weather parameters (e.g., Rain, Snow, Clouds). |
+| **`weather.description`** | string | Detailed description of the condition (e.g., "broken clouds"). |
+| **`main.temp`** | decimal | Current temperature. Units depend on the `units` parameter. |
+| **`main.humidity`** | integer | Humidity percentage (%). |
+| **`wind.speed`** | decimal | Wind speed. Unit Default: meter/sec. |
+| **`name`** | string | City name (e.g., Bengaluru). |
+| **`cod`** | integer | Internal parameter / HTTP status code. |
+
+---
+
+## Error Handling
+The API uses the following HTTP status codes to indicate the success or failure of an API request.
+
+| Status Code | Message | Description / Resolution |
+| :--- | :--- | :--- |
+| **400** | `Nothing to geocode` | **Bad Request:** Ensure `lat` and `lon` are present and formatted correctly. |
+| **401** | `Invalid API key` | **Unauthorized:** Your API key is incorrect or has not been activated yet. |
+| **404** | `city not found` | **Not Found:** The coordinates provided do not map to a known location. |
+| **429** | `Account blocked` | **Too Many Requests:** You have exceeded the free tier limit. |
+
+> **Note:** For all errors, the API returns a JSON response containing a `message` field to help identify the root cause.
