@@ -1,0 +1,4 @@
+# _config.yml
+title: Appium Setup on macOS (Apple Silicon)
+description: A step-by-step guide for installing and configuring Appium 3.x on macOS for iOS and Android mobile automation testing.
+theme: jekyll-theme-minimal
