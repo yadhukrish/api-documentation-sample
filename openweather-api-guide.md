@@ -1,47 +1,99 @@
 # Current Weather Data API
 
-The Current Weather Data API allows you to retrieve real-time weather information for any location on Earth using city names, ZIP codes, or geographic coordinates.
+Retrieve real-time weather data for any location on Earth using city names, ZIP codes, or geographic coordinates.
 
-## Endpoint
-`GET` `https://api.openweathermap.org/data/2.5/weather`
-
----
-
-## Authentication
-All requests to this API require an `appid` (API Key). 
-1. Sign up at [OpenWeatherMap](https://openweathermap.org/).
-2. Generate your key in the **API Keys** tab of your dashboard.
-3. Append the key to your request as a query parameter: `?appid={your_api_key}`.
-
----
-## Request Parameters
-
-The API supports location lookups via geographic coordinates or city names. Use the following parameters to define the scope of the request.
-
-| Parameter | Type | Required | Description |
-| :--- | :--- | :--- | :--- |
-| q | string | Conditional | City name, state code (USA only), and country code separated by commas (e.g., Bengaluru,IN). |
-| lat | decimal | Conditional | Latitude of the location. Required if the `q` parameter is not used. |
-| lon | decimal | Conditional | Longitude of the location. Required if the `q` parameter is not used. |
-| appid | string | Yes | Unique API key assigned to the account for authentication. |
-| units | string | No | Measurement units for temperature. Options include `standard`, `metric`, and `imperial`. |
-| lang | string | No | Language code for the output description (e.g., hi for Hindi, en for English). |
+**Base URL:** `https://api.openweathermap.org/data/2.5/weather`  
+**Method:** `GET`  
+**Response format:** JSON
 
 ---
 
-## Sample Request (City Name)
+## Quickstart
 
-To retrieve weather data using a specific city and country code, use the following request structure:
+Get a live weather response in under 5 minutes.
+
+**Before you begin:** You need an [OpenWeatherMap account](https://openweathermap.org/) and an active API key. See [Authentication](#authentication) for setup steps.
+
+**Step 1.** Replace `{API_KEY}` in the request below with your key.
+
+**Step 2.** Run the request:
 
 ```bash
 curl "https://api.openweathermap.org/data/2.5/weather?q=Bengaluru,IN&appid={API_KEY}&units=metric"
 ```
+
+**Step 3.** A successful response returns HTTP `200` with a JSON body. The fields `main.temp` and `weather.description` contain the current temperature and conditions.
+
+> **Note:** New API keys can take up to 2 hours to activate. If you receive a `401` error immediately after generating a key, wait and retry.
+
+---
+
+## Authentication
+
+All requests require an `appid` query parameter containing your API key.
+
+### Generate an API key
+
+1. Sign up or log in at [openweathermap.org](https://openweathermap.org/).
+2. Go to **My Profile → API Keys**.
+3. Enter a name for your key and click **Generate**.
+4. Copy the key and store it securely.
+
+### Use the API key
+
+Append the key as a query parameter on every request:
+
+```
+?appid={your_api_key}
+```
+
+**Example:**
+
+```bash
+curl "https://api.openweathermap.org/data/2.5/weather?q=London,GB&appid=abc123xyz"
+```
+
+> **Warning:** Do not expose your API key in client-side code or public repositories.
+
+---
+
+## Request Parameters
+
+The endpoint accepts the following query parameters.
+
+> **Note on location parameters:** Use either `q` (city name) or the `lat`/`lon` pair. You cannot combine them. If both are present, `lat`/`lon` takes precedence.
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `q` | string | Conditional | City name and optional country code, separated by a comma. Example: `Bengaluru,IN`. See [ISO 3166 country codes](https://en.wikipedia.org/wiki/ISO_3166-1). |
+| `lat` | decimal | Conditional | Latitude of the target location. Use with `lon`. |
+| `lon` | decimal | Conditional | Longitude of the target location. Use with `lat`. |
+| `appid` | string | Yes | Your API key. See [Authentication](#authentication). |
+| `units` | string | No | Unit system for temperature values. Options: `standard` (Kelvin), `metric` (Celsius), `imperial` (Fahrenheit). Defaults to `standard` if omitted. |
+| `lang` | string | No | Language code for the `weather.description` field. Example: `en`, `hi`, `fr`. See the [full language list](https://openweathermap.org/current#multi). |
+
+### Request examples
+
+**By city name:**
+
+```bash
+curl "https://api.openweathermap.org/data/2.5/weather?q=Bengaluru,IN&appid={API_KEY}&units=metric"
+```
+
+**By coordinates:**
+
+```bash
+curl "https://api.openweathermap.org/data/2.5/weather?lat=12.97&lon=77.60&appid={API_KEY}&units=metric"
+```
+
 ---
 
 ## Response Schema
-The API returns a JSON object. Below is an example of a successful response and the definitions of its primary fields.
 
-### Sample Response Body
+A successful request returns HTTP `200` and a JSON object.
+
+### Sample response
+
 ```json
 {
   "coord": {
@@ -89,31 +141,65 @@ The API returns a JSON object. Below is an example of a successful response and 
 }
 ```
 
----
-
-## Response Field Definitions
-The following table defines the key fields returned in the JSON response object to assist with data mapping and integration.
+### Response fields
 
 | Field | Type | Description |
 | :--- | :--- | :--- |
-| **`weather.main`** | string | Group of weather parameters (e.g., Rain, Snow, Clouds). |
-| **`weather.description`** | string | Detailed description of the condition (e.g., "scattered clouds"). |
-| **`main.temp`** | decimal | Current temperature. Units depend on the `units` parameter. |
-| **`main.humidity`** | integer | Humidity percentage (%). |
-| **`wind.speed`** | decimal | Wind speed. Default unit: meters per second. |
-| **`name`** | string | City name (e.g., Bengaluru). |
-| **`cod`** | integer | Internal parameter / HTTP status code. |
+| `coord.lat` | decimal | Latitude of the returned location. |
+| `coord.lon` | decimal | Longitude of the returned location. |
+| `weather[].main` | string | Weather condition group. Possible values: `Thunderstorm`, `Drizzle`, `Rain`, `Snow`, `Clear`, `Clouds`. |
+| `weather[].description` | string | Human-readable description of the condition. Example: `"scattered clouds"`. Affected by the `lang` parameter. |
+| `weather[].icon` | string | Icon ID. Use to construct an icon URL: `https://openweathermap.org/img/wn/{icon}@2x.png`. |
+| `main.temp` | decimal | Current temperature. Unit depends on the `units` parameter. |
+| `main.feels_like` | decimal | Perceived temperature accounting for wind and humidity. |
+| `main.temp_min` | decimal | Minimum temperature observed at the time of calculation. |
+| `main.temp_max` | decimal | Maximum temperature observed at the time of calculation. |
+| `main.pressure` | integer | Atmospheric pressure at sea level, in hPa. |
+| `main.humidity` | integer | Humidity percentage. |
+| `main.sea_level` | integer | Atmospheric pressure at sea level, in hPa. |
+| `main.grnd_level` | integer | Atmospheric pressure at ground level, in hPa. |
+| `visibility` | integer | Visibility in metres. Maximum value: `10000`. |
+| `wind.speed` | decimal | Wind speed. Unit depends on the `units` parameter. |
+| `wind.deg` | integer | Wind direction in degrees (meteorological). |
+| `wind.gust` | decimal | Wind gust speed. Unit depends on the `units` parameter. |
+| `clouds.all` | integer | Cloud coverage percentage. |
+| `dt` | integer | Time of data calculation, Unix timestamp (UTC). |
+| `sys.country` | string | Country code. Example: `IN`. |
+| `sys.sunrise` | integer | Sunrise time, Unix timestamp (UTC). |
+| `sys.sunset` | integer | Sunset time, Unix timestamp (UTC). |
+| `timezone` | integer | Shift in seconds from UTC. |
+| `name` | string | City name. |
+| `cod` | integer | HTTP status code of the response. |
 
 ---
 
-## Error Handling
-The API uses the following HTTP status codes to indicate the success or failure of an API request.
+## Error Reference
 
-| Status Code | Message | Description / Resolution |
+When a request fails, the API returns an HTTP error status and a JSON body with a `message` field describing the issue.
+
+**Error response structure:**
+
+```json
+{
+  "cod": 401,
+  "message": "Invalid API key. Please see https://openweathermap.org/faq#error401 for more info."
+}
+```
+
+### Error codes
+
+| Status Code | Cause | Resolution |
 | :--- | :--- | :--- |
-| **400** | `Nothing to geocode` | **Bad Request:** Ensure `lat` and `lon` are present and formatted correctly. |
-| **401** | `Invalid API key` | **Unauthorized:** Your API key is incorrect or has not been activated yet. |
-| **404** | `city not found` | **Not Found:** The coordinates provided do not map to a known location. |
-| **429** | `Account blocked` | **Too Many Requests:** You have exceeded the free tier limit. |
+| `400 Bad Request` | The request is missing required parameters, or `lat`/`lon` values are malformed. | Verify that both `lat` and `lon` are present and are valid decimal numbers. |
+| `401 Unauthorized` | The `appid` is missing, incorrect, or not yet active. | Check that your API key is correct. New keys can take up to 2 hours to activate. |
+| `404 Not Found` | The city name or coordinates do not match a known location. | Confirm the spelling and country code for `q`, or verify the coordinates using a mapping tool. |
+| `429 Too Many Requests` | The request rate has exceeded the free tier limit. | Wait before retrying, or upgrade your plan at [openweathermap.org/price](https://openweathermap.org/price). |
 
-> **Note:** For all errors, the API returns a JSON response containing a `message` field to help identify the root cause.
+---
+
+## Related Resources
+
+- [OpenWeatherMap API Documentation](https://openweathermap.org/api)
+- [Supported Languages](https://openweathermap.org/current#multi)
+- [Weather Condition Codes](https://openweathermap.org/weather-conditions)
+- [Pricing and Rate Limits](https://openweathermap.org/price)
