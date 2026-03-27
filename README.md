@@ -29,6 +29,6 @@ This repository documents the [OpenWeather Current Weather API](https://openweat
 
 ## About the Author
 
-Yadhukrishnan PV is a Senior QA Engineer (7+ years) transitioning into Technical Writing, with a focus on API and developer documentation.
+Yadhukrishnan PV is a Technical Writer with a background in QA engineering, bringing 5+ years of combined experience to API documentation and developer-facing content.
 
 [LinkedIn](https://www.linkedin.com/in/yadhukrishnanpv) · [GitHub Portfolio](https://github.com/yadhukrish)
